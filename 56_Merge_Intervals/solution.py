@@ -29,10 +29,10 @@ class Solution:
             else:
                 next_interval:    List[int] = intervals.pop()
 
-            # Validate interval.
-            if not current_interval or not next_interval or len(current_interval) != 2 or len(next_interval) != 2:
-                raise ValueError('Invalid interval. Must have two ints. '
-                                 f'Found:\n  current: {current_interval}\n  next: {next_interval}')
+            # (Not strictly needed for Leetcode problem. Safe to assume intervals are valid.) Validate interval.
+            # if not current_interval or not next_interval or len(current_interval) != 2 or len(next_interval) != 2:
+            #    raise ValueError('Invalid interval. Must have two ints. '
+            #                     f'Found:\n  current: {current_interval}\n  next: {next_interval}')
 
             # The beginning and end of the next interval are both inside the current interval's range. Skip it.
             if (next_interval[0] >= current_interval[0]) and (next_interval[1] <= current_interval[1]):
