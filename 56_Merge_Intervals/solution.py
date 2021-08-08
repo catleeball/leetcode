@@ -34,6 +34,9 @@ class Solution:
                 raise ValueError('Invalid interval. Must have two ints. '
                                  f'Found:\n  current: {current_interval}\n  next: {next_interval}')
 
+            # The beginning and end of the next interval are both inside the current interval's range. Skip it.
+            if (next_interval[0] >= current_interval[0]) and (next_interval[1] <= current_interval[1]):
+                continue
             # Check if intervals overlap. If so, merge into one with the start time of earlier and end time of later and
             # continue popping. Maintain current interval until it's next neighbor can't be merged into it.
             if current_interval[1] >= next_interval[0]:

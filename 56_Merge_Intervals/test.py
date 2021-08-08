@@ -22,6 +22,12 @@ class TestSolution(unittest.TestCase):
         actual_output = self.merge(intervals)
         self.assertEqual(expected_output, actual_output)
 
+    def test_total_overlap(self):
+        intervals       = [[1, 4], [2, 3]]
+        expected_output = [[1,4]]
+        actual_output = self.merge(intervals)
+        self.assertEqual(expected_output, actual_output)
+
     def test_edge_case_one_item(self):
         intervals       = [[1, 2]]
         expected_output = [[1, 2]]
