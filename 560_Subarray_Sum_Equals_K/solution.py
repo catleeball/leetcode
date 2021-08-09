@@ -7,6 +7,9 @@ from typing import Dict, List
 from collections import defaultdict
 
 class Solution:
+    # Leetcode's evaluation of this solution:
+    #   Runtime:       248 ms, faster than 85.93% of Python3 online submissions for Subarray Sum Equals K.
+    #   Memory Usage: 16.7 MB, less than   61.33% of Python3 online submissions for Subarray Sum Equals K.
     def subarraySum(self, nums: List[int], k: int) -> int:
         # Edge case: empty list.
         if not nums:
