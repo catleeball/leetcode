@@ -16,7 +16,7 @@ class TestSolution(unittest.TestCase):
 
     def test_example_2(self):
         input_string = "a)b(c)d"
-        expected = "a)b(c)d"
+        expected = "ab(c)d"
         actual = self.minRemoveToMakeValid(input_string)
         self.assertEqual(expected, actual)
 
@@ -29,6 +29,12 @@ class TestSolution(unittest.TestCase):
     def test_example_4(self):
         input_string = "(a(b(c)d)"
         expected = "a(b(c)d)"
+        actual = self.minRemoveToMakeValid(input_string)
+        self.assertEqual(expected, actual)
+
+    def test_one_paren(self):
+        input_string = '(a'
+        expected = 'a'
         actual = self.minRemoveToMakeValid(input_string)
         self.assertEqual(expected, actual)
 
