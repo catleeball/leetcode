@@ -25,12 +25,13 @@ class TestSolution(unittest.TestCase):
         actual = self.minRemoveToMakeValid(input_string)
         self.assertEqual(expected, actual)
 
-    # TODO: Open a bug: this test case fails, but uses example 4 from description, code solution passes grader.
-    # def test_example_4(self):
-    #     input_string = "(a(b(c)d)"
-    #     expected = "a(b(c)d)"
-    #     actual = self.minRemoveToMakeValid(input_string)
-    #     self.assertEqual(expected, actual)
+    # Opened bug: https://github.com/LeetCode-Feedback/LeetCode-Feedback/issues/4458
+    # I think there is a flaw with Approach 3 from the Solution write-up. Detailed in above bug.
+    def test_example_4(self):
+        input_string = "(a(b(c)d)"
+        expected = "a(b(c)d)"
+        actual = self.minRemoveToMakeValid(input_string)
+        self.assertEqual(expected, actual)
 
     def test_one_paren(self):
         input_string = '(a'

@@ -34,6 +34,13 @@ class Solution:
         # Note for other langs: this can be an unsigned int; we will never decrement it.
         open_parens: int = 0
 
+        # !! This loop fails test_example_4() !!
+        #    - Popping rightmost opening parens only means that in example 4, the `(` at index 0 is preserved, but not
+        #      needed. Instead `(` at index 4 is removed, pushing `b` and `c` into the grouping.
+        #    - Opened bug since this is the sample solution approach 3 describes, but the approach appears flawed, even
+        #      when testing with the sample code provided. Test case in leetcode grader for example 4 appears missing.
+        #      https://github.com/LeetCode-Feedback/LeetCode-Feedback/issues/4458
+        #
         # First pass, remove extra end parens. Use deque so we can consume this list with popleft() in the second pass.
         # Doing so will reduce peak memory usage.
         buffer: Deque[str] = deque()
