@@ -6,6 +6,10 @@ class TestSolution(unittest.TestCase):
     def setUp(self):
         self.minRemoveToMakeValid = Solution().minRemoveToMakeValid
 
+    # TODO: These tests could be refactored into a smarter solver that checks if parens are valid and all the characters
+    #       are still present. Currently, there could be other valid solutions to these tests, and making tests to
+    #       account for all possible outputs could grow very large.
+
     def test_example_1(self):
         input_string = "lee(t(c)o)de)"
         # Any of following are acceptable outputs.
@@ -25,13 +29,11 @@ class TestSolution(unittest.TestCase):
         actual = self.minRemoveToMakeValid(input_string)
         self.assertEqual(expected, actual)
 
-    # Opened bug: https://github.com/LeetCode-Feedback/LeetCode-Feedback/issues/4458
-    # I think there is a flaw with Approach 3 from the Solution write-up. Detailed in above bug.
     def test_example_4(self):
         input_string = "(a(b(c)d)"
-        expected = "a(b(c)d)"
+        expected = ["a(b(c)d)", "(a(bc)d)"]
         actual = self.minRemoveToMakeValid(input_string)
-        self.assertEqual(expected, actual)
+        self.assertIn(actual, expected)
 
     def test_one_paren(self):
         input_string = '(a'
