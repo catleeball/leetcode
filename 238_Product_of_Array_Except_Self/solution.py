@@ -16,9 +16,23 @@ Follow up: Can you solve the problem in O(1) extra space complexity?
            (The output array does not count as extra space for space complexity analysis.)
 """
 
-from typing import List
+from typing import List, Optional
+# import numpy as np
+from math import prod
 
 
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
-        pass
+        products: List[int] = []
+        for index, _ in enumerate(nums):
+            products.append(prod(nums[:index] + nums[index + 1:]))
+        return products
+
+    # def numpyProductExceptSelf(self, nums: List[int]) -> List[int]:
+    #     total = np.uint32(len(nums))
+    #     products = np.empty((total,), dtype=np.int32)
+    #     for index, val in enumerate(nums):
+    #         products[index] = np.product(
+    #             np.asarray((nums[:index] + nums[index+1:]),dtype=np.int32)
+    #         )
+    #     return np.ndarray.tolist(products)
