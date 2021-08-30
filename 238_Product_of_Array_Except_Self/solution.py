@@ -15,24 +15,80 @@ Constraints:
 Follow up: Can you solve the problem in O(1) extra space complexity?
            (The output array does not count as extra space for space complexity analysis.)
 """
-
-from typing import List, Optional
-# import numpy as np
+import array
+from typing import List, Iterable
 from math import prod
 
 
 class Solution:
-    def productExceptSelf(self, nums: List[int]) -> List[int]:
-        products: List[int] = []
-        for index, _ in enumerate(nums):
-            products.append(prod(nums[:index] + nums[index + 1:]))
+    # Optimization note: Could write special path for zeros.
+    #                    Also, if there's ever more than one zero in nums, the return is all zeros.
+
+    def lr_product(self, nums: Iterable) -> Iterable:
+        products = array.array('i')
+        for index, value in enumerate(nums):
+            if index == 0:
+                # This value will later be replaced by the product of all rightmost elements.
+                products.append(1)
+                continue
+
+            if index == 1:
+                products.append(value)
+                continue
+
+            if index == len(nums) - 1:
+                # We never want the product of all list items.
+                break
+
+            # I hate that this is faster than just `products.append(products[-1] * value)` but here we are.
+            products.append(prod(array.array('i', (products[index - 1], value))))
+
         return products
 
-    # def numpyProductExceptSelf(self, nums: List[int]) -> List[int]:
-    #     total = np.uint32(len(nums))
-    #     products = np.empty((total,), dtype=np.int32)
-    #     for index, val in enumerate(nums):
-    #         products[index] = np.product(
-    #             np.asarray((nums[:index] + nums[index+1:]),dtype=np.int32)
-    #         )
-    #     return np.ndarray.tolist(products)
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        """Solution to problem stated at top of file."""
+
+        # Don't do any math if it's just two items.
+        if len(nums) == 2:
+            return [nums[1], nums[0]]
+
+        # Extra O(n) compute, going to benchmark if this helps product speed any.
+        nums_arr = array.array('i', nums)
+        # Peak memory under O(n*2) until we drop `nums`. We don't bother popping the list down to avoid the memory peak
+        # since array.fromlist is defined in arraymodule.c and we'll avoid hopping around a lot of interpreted popping
+        # and save overall compute time.
+        del nums
+
+        # TODO: reduce memory overhead.
+        left_products = self.lr_product(nums_arr)
+        left_products.reverse()
+        nums_arr.reverse()
+        right_products = self.lr_product(nums_arr)
+
+        for index, _ in enumerate(nums_arr):
+            if index == 0:
+                nums_arr[0] = right_products.pop()
+                continue
+            if index == len(nums_arr) - 1:
+                nums_arr[index] = left_products.pop()
+                break
+            nums_arr[index] = prod(array.array('i', (right_products.pop(), left_products.pop())))
+
+        return nums_arr.tolist()
+
+
+        # In-place attempt, broken
+        # current_right_product = 1
+        # prev_right_val = None
+        # i = len(nums_arr) - 1
+        # while left_products:
+        #     n = left_products.pop()
+        #     if not prev_right_val:
+        #         prev_right_val = nums_arr[i]
+        #         nums_arr[i] = n
+        #         continue
+        #     current_right_product = prod(array.array('i', (n, current_right_product)))
+        #     prev_right_val = nums_arr[i]
+        #     nums_arr[i] = current_right_product
+        #     i -= 1
+            # products.append(self.cached_product(left=nums_arr[:index], right=nums_arr[index + 1:]))
