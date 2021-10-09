@@ -11,12 +11,12 @@ class TestSolution(parameterized.TestCase):
         {'heights': [2, 2, 2, 2], 'expected': [3]},
     )
     def setUp(self) -> None:
-        self.c = Solution()
-        self.findBuildings = Solution.findBuildings
+        c = Solution()
+        self.findBuildings = c.findBuildings
 
     def test_example_1(self, heights, expected):
-        acutal = self.findBuildings(heights)
-        self.assertEqual(expected, acutal)
+        actual = self.findBuildings(heights)
+        self.assertEqual(expected, actual)
 
 
 if __name__ == '__main__':
