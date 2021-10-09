@@ -7,7 +7,6 @@
 # obstructions. Formally, a building has an ocean view if all the buildings to its right have a smaller height.
 #
 # Return a list of indices (0-indexed) of buildings that have an ocean view, sorted in increasing order.
-#
 # ----------------------------------------------------------------------------------------------------------------------
 # Example 1:
 #     Input: heights = [4,2,3,1]
@@ -29,7 +28,6 @@
 #     Output: [3]
 #     Explanation: Buildings cannot see the ocean if there are buildings of the same height to its right.
 # ----------------------------------------------------------------------------------------------------------------------
-#
 # Constraints:
 #     1 <= heights.length <= 10^5
 #     1 <= heights[i] <= 10^9
@@ -37,7 +35,32 @@
 
 from typing import List
 
-
+# Runtime: 684 ms, faster than 82.41% of Python3 online submissions
+# Memory Usage: 28.4 MB, less than 99.49% of Python3 online submissions
 class Solution:
     def findBuildings(self, heights: List[int]) -> List[int]:
-        pass
+        # Edge cases where we don't need to do anything.
+        if not heights:
+            return []
+        if len(heights) == 1:
+            return [0]
+
+        answer: List[int] = []
+        tallest = 0
+        # Required since pop from `heights` as we loop over it to reduce peak memory use.
+        num_buildings = len(heights)
+
+        # Note that we use a for loop instead of `while heights: heights.pop` so we can preserve indexes more easily.
+        for index in reversed(range(num_buildings)):
+            current = heights.pop()
+            # If nothing taller to the right, it has an ocean view, append to answers list.
+            if current > tallest:
+                answer.append(index)
+                tallest = current
+
+        # We iterated `heights` backward, so our current list is descending, but we want ascending.
+        # Alternatively: `answer` could be a deque, append left, and cast to list at the end. Not sure how strict
+        #                 leetcode is about the return type. Assuming we have to do the final cast to list, this should
+        #                 have roughly the same performance.
+        answer.reverse()
+        return answer
