@@ -33,11 +33,39 @@
 #     1 <= heights[i] <= 10^9
 # ----------------------------------------------------------------------------------------------------------------------
 
-from typing import List
+from typing import List, Deque
+from collections import deque
 
+# Runtime: 676 ms, faster than 89.05% of Python3 online submissions for Buildings With an Ocean View.
+# Memory Usage: 27.9 MB, less than 99.92% of Python3 online submissions for Buildings With an Ocean View.
+class Solution1:
+    def findBuildings(self, heights: List[int]) -> Deque[int]:
+        # Edge cases where we don't need to do anything.
+        if not heights:
+            return deque([])
+        if len(heights) == 1:
+            return deque([0])
+
+        answer: Deque[int] = deque()
+        tallest: int = 0
+        # Required since pop from `heights` as we loop over it to reduce peak memory use.
+        num_buildings: int = len(heights)
+
+        # Note that we use a for loop instead of `while heights: heights.pop` so we can preserve indexes more easily.
+        for index in reversed(range(num_buildings)):
+            current: int = heights.pop()
+            # If nothing taller to the right, it has an ocean view, append to answers list.
+            if current > tallest:
+                answer.appendleft(index)
+                tallest = current
+
+        return answer
+
+
+# ----------------------------------------------------------------------------------------------------------------------
 # Runtime: 684 ms, faster than 82.41% of Python3 online submissions
 # Memory Usage: 28.4 MB, less than 99.49% of Python3 online submissions
-class Solution:
+class Solution0:
     def findBuildings(self, heights: List[int]) -> List[int]:
         # Edge cases where we don't need to do anything.
         if not heights:
@@ -59,8 +87,5 @@ class Solution:
                 tallest = current
 
         # We iterated `heights` backward, so our current list is descending, but we want ascending.
-        # Alternatively: `answer` could be a deque, append left, and cast to list at the end. Not sure how strict
-        #                 leetcode is about the return type. Assuming we have to do the final cast to list, this should
-        #                 have roughly the same performance.
         answer.reverse()
         return answer
