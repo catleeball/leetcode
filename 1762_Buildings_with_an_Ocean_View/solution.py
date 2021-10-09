@@ -33,8 +33,63 @@
 #     1 <= heights[i] <= 10^9
 # ----------------------------------------------------------------------------------------------------------------------
 
-from typing import List, Deque
+from typing import List, Deque, Iterable
 from collections import deque
+from array import array
+
+# Runtime: 688 ms, faster than 79.26% of Python3 online submissions for Buildings With an Ocean View.
+# Memory Usage: 27.3 MB, less than 99.98% of Python3 online submissions for Buildings With an Ocean View.
+class Solution2:
+    def findBuildings(self, heights: List[int]) -> Iterable[int]:
+        # Edge cases where we don't need to do anything.
+        if not heights:
+            return array('B')
+        if len(heights) == 1:
+            return array('B', [0])
+
+        answer = array('I')
+        tallest: int = 0
+        # Required since pop from `heights` as we loop over it to reduce peak memory use.
+        num_buildings: int = len(heights)
+
+        # Note that we use a for loop instead of `while heights: heights.pop` so we can preserve indexes more easily.
+        for index in reversed(range(num_buildings)):
+            current: int = heights.pop()
+            # If nothing taller to the right, it has an ocean view, append to answers list.
+            if current > tallest:
+                answer.append(index)
+                tallest = current
+
+        # Like Solution0, appending while we iterate backward over `heights` means it's currently in descending order.
+        answer.reverse()
+        return answer
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Runtime: 676 ms, faster than 89.05% of Python3 online submissions for Buildings With an Ocean View.
+# Memory Usage: 27.9 MB, less than 99.92% of Python3 online submissions for Buildings With an Ocean View.
+class Solution1:
+    def findBuildings(self, heights: List[int]) -> Deque[int]:
+        # Edge cases where we don't need to do anything.
+        if not heights:
+            return deque([])
+        if len(heights) == 1:
+            return deque([0])
+
+        answer: Deque[int] = deque()
+        tallest: int = 0
+        # Required since pop from `heights` as we loop over it to reduce peak memory use.
+        num_buildings: int = len(heights)
+
+        # Note that we use a for loop instead of `while heights: heights.pop` so we can preserve indexes more easily.
+        for index in reversed(range(num_buildings)):
+            current: int = heights.pop()
+            # If nothing taller to the right, it has an ocean view, append to answers list.
+            if current > tallest:
+                answer.appendleft(index)
+                tallest = current
+
+        return answer
 
 # Runtime: 676 ms, faster than 89.05% of Python3 online submissions for Buildings With an Ocean View.
 # Memory Usage: 27.9 MB, less than 99.92% of Python3 online submissions for Buildings With an Ocean View.
