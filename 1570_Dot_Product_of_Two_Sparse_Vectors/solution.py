@@ -36,13 +36,21 @@
 from typing import List
 
 
+# Runtime: 2181 ms, faster than 32.68% of Python3 online submissions for Dot Product of Two Sparse Vectors.
+# Memory Usage: 37.8 MB, less than 5.93% of Python3 online submissions for Dot Product of Two Sparse Vectors.
 class SparseVector:
     def __init__(self, nums: List[int]):
-        pass
+        self.IndexValueMap = {}
+        for index, value in enumerate(nums):
+            self.IndexValueMap[index] = value
 
-    # Return the dotProduct of two sparse vectors
     def dotProduct(self, vec: 'SparseVector') -> int:
-        pass
+        dot_product = 0
+        for index in vec.IndexValueMap:
+            # Both vectors must have a value at the same index to return a value, since 0 * anything = 0.
+            if index in self.IndexValueMap:
+                dot_product += self.IndexValueMap[index] * vec.IndexValueMap[index]
+        return dot_product
 
 
 # Your SparseVector object will be instantiated and called as such:
